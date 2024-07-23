@@ -25,12 +25,11 @@ router.post('/users', async (req, res) => {
 // });
 
 // Get a user by ID
-router.get('/users/:id', authMiddleware, async (req, res) => {
+router.get('/users', authMiddleware, async (req, res) => {
     try {
-        if(req.userId !== req.params.id) {
-            return res.status(401).send({ error: 'Unauthorized' });
-        }
-        const user = await User.findById(req.params.id);
+        const userId = req.userId;
+        const user = await User.findById(userId);
+        console.log(user);
         if (!user) {
             return res.status(404).send();
         }
@@ -41,12 +40,10 @@ router.get('/users/:id', authMiddleware, async (req, res) => {
 });
 
 // Update a user by ID
-router.patch('/users/:id', authMiddleware, async (req, res) => {
+router.put('/users', authMiddleware, async (req, res) => {
     try {
-        if(req.userId !== req.params.id) {
-            return res.status(401).send({ error: 'Unauthorized' });
-        }
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        const userId = req.userId;
+        const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
         if (!user) {
             return res.status(404).send();
         }
@@ -57,12 +54,10 @@ router.patch('/users/:id', authMiddleware, async (req, res) => {
 });
 
 // Delete a user by ID
-router.delete('/users/:id', authMiddleware, async (req, res) => {
+router.delete('/users', authMiddleware, async (req, res) => {
     try {
-        if(req.userId !== req.params.id) {
-            return res.status(401).send({ error: 'Unauthorized' });
-        }
-        const user = await User.findByIdAndDelete(req.params.id);
+        const userId = req.userId;
+        const user = await User.findByIdAndDelete(userId);
         if (!user) {
             return res.status(404).send();
         }
