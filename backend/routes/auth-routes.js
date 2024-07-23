@@ -45,10 +45,11 @@ router.post('/auth/forgot-password', async (req, res) => {
             await user.save();
     
             const resetUrl = `http://localhost:3000/reset-password?t=${token}`;
-            const message = `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
-                            Please click on the following link, or paste this into your browser to complete the process:\n\n
-                            ${resetUrl}\n\n
-                            If you did not request this, please ignore this email and your password will remain unchanged.\n`;
+            const message = "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+                            "Please click on the following link, or paste this into your browser to complete the process:\n\n" + 
+                            `${resetUrl}\n\n` +
+                            "Note that the link is valid for 1 hour.\n\n" + 
+                            "If you did not request this, please ignore this email.\n";
     
             await sendEmail(user.email, 'BetSmart Password Reset', message);
         }
