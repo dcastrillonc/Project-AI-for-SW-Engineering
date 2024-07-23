@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    balance: { type: Number, default: 0 }
 });
 
 // Hash the password before saving the user
@@ -28,7 +29,7 @@ userSchema.pre('findOneAndUpdate', async function(next) {
 // Method to compare password
 userSchema.methods.comparePassword = function(candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
-};
+};  
 
 // Transform output to hide password
 userSchema.methods.toJSON = function() {

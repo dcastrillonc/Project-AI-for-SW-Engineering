@@ -20,6 +20,7 @@ router.post('/auth/login', async (req, res) => {
         res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
         res.status(200).send({ message: 'Login successful' });
     } catch (error) {
+        console.log(error);
         res.status(500).send(error);
     }
 });
