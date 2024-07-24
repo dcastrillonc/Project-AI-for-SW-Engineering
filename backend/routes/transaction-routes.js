@@ -5,7 +5,7 @@ const User = require('../models/user-model');
 const authMiddleware = require('../middleware/auth-middleware');
 
 // Place transaction
-router.post('/transactions', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         const { amount } = req.body;
@@ -44,7 +44,7 @@ router.post('/transactions', authMiddleware, async (req, res) => {
     }
 });
 
-router.get("/transactions", authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         const user = await User.findById(userId);
