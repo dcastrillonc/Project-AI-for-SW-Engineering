@@ -5,7 +5,7 @@ const userRoutes = require('./routes/user-routes');
 const authRoutes = require('./routes/auth-routes');
 const betRoutes = require('./routes/bet-routes');
 const cookieParser = require('cookie-parser');
-const removeBalanceMiddleware = require('./middleware/remove-balance-middleware');
+const sanitizeUserMiddleware = require('./middleware/sanitize-user-middleware');
 const app = express();
 const port = process.env.PORT;
 
@@ -22,7 +22,7 @@ db.once('open', () => {
 });
 
 // Use the user and auth routes
-app.use('/api/v1/users', removeBalanceMiddleware, userRoutes);
+app.use('/api/v1/users', sanitizeUserMiddleware, userRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use("/api/v1/bets", betRoutes);
 

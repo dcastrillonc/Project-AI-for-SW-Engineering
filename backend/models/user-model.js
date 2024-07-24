@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    balance: { type: Number, default: 0 }
+    balance: { type: Number, default: 0 },
+    resetPasswordToken: {type: String },
 });
 
 // Hash the password before saving the user
@@ -35,6 +36,7 @@ userSchema.methods.comparePassword = function(candidatePassword) {
 userSchema.methods.toJSON = function() {
     const userObject = this.toObject();
     delete userObject.password;
+    delete userObject.resetPasswordToken;
     return userObject;
 };
 
