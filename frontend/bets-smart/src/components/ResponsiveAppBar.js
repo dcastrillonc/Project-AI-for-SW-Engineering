@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from '@mui/material';
 
 const pages = ['Events', 'Bets', 'Statistics'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -36,7 +37,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ bgcolor: '#0f520a' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -149,6 +150,20 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Link
+                    href={
+                      setting === "Profile"
+                        ? "/profile"
+                        : setting === "Account"
+                        ? "/account"
+                        : setting === "Dashboard"
+                        ? "/dashboard"
+                        : "/logout"
+                    }
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </Link>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
