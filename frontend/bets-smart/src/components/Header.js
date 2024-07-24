@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactiveAppBar from './ReactiveAppBar.js';
 import Container from '@mui/material/Container';
+import ResponsiveAppBar from './ResponsiveAppBar';
 
 export default function Header() {
   return (
     <Container sx={{ padding: '50px' }}>
-      <ReactiveAppBar />
+      <ResponsiveAppBar/>
     </Container>
   );
 }
