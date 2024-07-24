@@ -5,6 +5,8 @@ const resultBetSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     fixtureId: {type: Number, required: true, min: 0},
     amount: {type: Number, required: true, min: 1},
+    homeTeamName: {type: String, required: true, minLength: 2},
+    awayTeamName: {type: String, required: true, minLength: 2},
     homeScore: {type: Number, required: true, min: 0},
     awayScore: {type: Number, required: true, min: 0},
     UTCDate: {type: Date, required: true, default: Date.now},
