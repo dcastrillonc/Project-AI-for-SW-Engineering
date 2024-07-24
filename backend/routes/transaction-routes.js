@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/auth-middleware');
 // Place transaction
 router.post('/', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const { amount } = req.body;
         if(typeof amount !== "number") {
             return res.status(400).send({message: "Amount must be a number"});
@@ -46,7 +46,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
 router.get("/", authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findById(userId);
     
         if(!user) {

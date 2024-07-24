@@ -7,12 +7,18 @@ const authMiddleware = require('../middleware/auth-middleware');
 
 // Place WinLoseBet
 router.post("/winlose", async (req, res) => {
-    const { bet } = req.body;
+    
+    const winLoseBetObj = {
+        
+    }
+
     try {
-        WinLoseBet.validate(bet);
+        await WinLoseBet.validate(req.body);
     } catch(error) {
         return res.status(400).send(error);
     }
+
+    res.status(201).send();
 });
 
 // Create a new user
@@ -39,7 +45,7 @@ router.post('/users', async (req, res) => {
 // Get a user by ID
 router.get('/users', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findById(userId);
         console.log(user);
         if (!user) {
@@ -54,7 +60,7 @@ router.get('/users', authMiddleware, async (req, res) => {
 // Update a user by ID
 router.put('/users', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
         if (!user) {
             return res.status(404).send();
@@ -68,7 +74,7 @@ router.put('/users', authMiddleware, async (req, res) => {
 // Delete a user by ID
 router.delete('/users', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findByIdAndDelete(userId);
         if (!user) {
             return res.status(404).send();

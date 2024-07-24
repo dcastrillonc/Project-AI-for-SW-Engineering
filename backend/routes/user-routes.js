@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 // Get a user by ID
 router.get('/', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).send();
@@ -32,7 +32,7 @@ router.get('/', authMiddleware, async (req, res) => {
 // Update a user by ID
 router.put('/', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
         if (!user) {
             return res.status(404).send();
@@ -46,7 +46,7 @@ router.put('/', authMiddleware, async (req, res) => {
 // Delete a user by ID
 router.delete('/', authMiddleware, async (req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.user._id;
         const user = await User.findByIdAndDelete(userId);
         if (!user) {
             return res.status(404).send();
