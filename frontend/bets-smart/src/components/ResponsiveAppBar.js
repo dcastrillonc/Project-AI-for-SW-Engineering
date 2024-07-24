@@ -14,8 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from '@mui/material';
 
-const pages = ['Events', 'Bets', 'Statistics'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Events', 'Bets', 'Insights'];
+const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -56,7 +56,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Bet-Smart
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -149,15 +149,11 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} >
                   <Link
                     href={
                       setting === "Profile"
                         ? "/profile"
-                        : setting === "Account"
-                        ? "/account"
-                        : setting === "Dashboard"
-                        ? "/dashboard"
                         : "/logout"
                     }
                     style={{ textDecoration: "none", color: "white" }}
