@@ -26,6 +26,27 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Dummy login
+router.post('/dummy-login', async (req, res) => {
+    try {
+        // const { email, password } = req.body;
+
+        const users = await User.find();
+
+        if(users.length === 0) {
+            return res.status(401).send({message: "No users registered"});
+        }
+
+        const user = users[0];
+        const token = jwt.sign({ userId: user._id }, secret, { expiresIn: '1h' });
+        res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+        return res.status(200).send({ message: 'Dummy login successful' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+});
+
 // Logout route
 router.post('/logout', (req, res) => {
     res.clearCookie('auth_token');
