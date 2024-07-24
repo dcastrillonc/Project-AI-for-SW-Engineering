@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const winLoseBetSchema = new mongoose.Schema({
+const resultBetSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     fixtureId: {type: Number, required: true, min: 0},
     amount: {type: Number, required: true, min: 1},
-    winTeam: {type: String, required: true, enum: {values: ["home", "away"]}},
+    homeScore: {type: Number, required: true, min: 0},
+    awayScore: {type: Number, required: true, min: 0},
     UTCDate: {type: Date, required: true, default: Date.now},
     payed: {type: Boolean, required: true, default: false},
 });
 
-module.exports = mongoose.model('WinLoseBet', winLoseBetSchema);
+module.exports = mongoose.model('ResultBet', resultBetSchema);
