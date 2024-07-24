@@ -7,7 +7,7 @@ const router = express.Router();
 const secret = process.env.JWT_SECRET;
 
 // Login route
-router.post('/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
@@ -26,7 +26,7 @@ router.post('/auth/login', async (req, res) => {
 });
 
 // Logout route
-router.post('/auth/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     res.clearCookie('auth_token');
     res.status(200).send({ message: 'Logged out successfully' });
 });

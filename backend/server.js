@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/user-routes');
 const authRoutes = require('./routes/auth-routes');
+const betRoutes = require('./routes/bet-routes');
 const cookieParser = require('cookie-parser');
 const removeBalanceMiddleware = require('./middleware/remove-balance-middleware');
 const app = express();
@@ -21,8 +22,9 @@ db.once('open', () => {
 });
 
 // Use the user and auth routes
-app.use('/api/v1', removeBalanceMiddleware, userRoutes);
-app.use('/api/v1', authRoutes);
+app.use('/api/v1/users', removeBalanceMiddleware, userRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use("/api/v1/bets", betRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

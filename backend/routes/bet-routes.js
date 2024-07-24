@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user-model');
+const WinLoseBet = require('../models/winlose-bet-model');
 const authMiddleware = require('../middleware/auth-middleware');
 
+
+// Place WinLoseBet
+router.post("/winlose", async (req, res) => {
+    const { bet } = req.body;
+    try {
+        WinLoseBet.validate(bet);
+    } catch(error) {
+        return res.status(400).send(error);
+    }
+});
+
 // Create a new user
-router.post('/', async (req, res) => {
+router.post('/users', async (req, res) => {
     try {
         const user = new User(req.body);
         await user.save();
@@ -25,7 +37,7 @@ router.post('/', async (req, res) => {
 // });
 
 // Get a user by ID
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/users', authMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         const user = await User.findById(userId);
@@ -40,7 +52,7 @@ router.get('/', authMiddleware, async (req, res) => {
 });
 
 // Update a user by ID
-router.put('/', authMiddleware, async (req, res) => {
+router.put('/users', authMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
@@ -54,7 +66,7 @@ router.put('/', authMiddleware, async (req, res) => {
 });
 
 // Delete a user by ID
-router.delete('/', authMiddleware, async (req, res) => {
+router.delete('/users', authMiddleware, async (req, res) => {
     try {
         const userId = req.userId;
         const user = await User.findByIdAndDelete(userId);
