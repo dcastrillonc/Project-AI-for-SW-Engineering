@@ -26,5 +26,6 @@
     "axios-mock-adapter": "^1.19.0",
     "babel-jest": "^29.7.0",
     "jest": "^26.6.3"
+
   }
 }

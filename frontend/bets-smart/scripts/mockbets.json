@@ -1,0 +1,166 @@
+{
+    "total_bets_placed": 10,
+    "bets": [
+      {
+        "match": "Team A vs Team B",
+        "bet": "Team A wins",
+        "outcome": "Win",
+        "odds": 1.5,
+        "details": {
+          "team_A": {
+            "league": "Premier League",
+            "position": "5th"
+          },
+          "team_B": {
+            "league": "Premier League",
+            "position": "12th"
+          }
+        }
+      },
+      {
+        "match": "Team C vs Team D",
+        "bet": "Team D wins",
+        "outcome": "Loss",
+        "odds": 2.0,
+        "details": {
+          "team_C": {
+            "league": "La Liga",
+            "position": "2nd"
+          },
+          "team_D": {
+            "league": "La Liga",
+            "position": "8th"
+          }
+        }
+      },
+      {
+        "match": "Team E vs Team F",
+        "bet": "Draw",
+        "outcome": "Win",
+        "odds": 3.0,
+        "details": {
+          "team_E": {
+            "league": "Serie A",
+            "position": "3rd"
+          },
+          "team_F": {
+            "league": "Serie A",
+            "position": "6th"
+          }
+        }
+      },
+      {
+        "match": "Team G vs Team H",
+        "bet": "Draw",
+        "outcome": "Draw",
+        "odds": 2.5,
+        "details": {
+          "team_G": {
+            "league": "Bundesliga",
+            "position": "1st"
+          },
+          "team_H": {
+            "league": "Bundesliga",
+            "position": "7th"
+          }
+        }
+      },
+      {
+        "match": "Team I vs Team J",
+        "bet": "Team I wins",
+        "outcome": "Win",
+        "odds": 1.75,
+        "details": {
+          "team_I": {
+            "league": "Ligue 1",
+            "position": "4th"
+          },
+          "team_J": {
+            "league": "Ligue 1",
+            "position": "10th"
+          }
+        }
+      },
+      {
+        "match": "Team K vs Team L",
+        "bet": "Team L wins",
+        "outcome": "Loss",
+        "odds": 2.2,
+        "details": {
+          "team_K": {
+            "league": "Eredivisie",
+            "position": "3rd"
+          },
+          "team_L": {
+            "league": "Eredivisie",
+            "position": "9th"
+          }
+        }
+      },
+      {
+        "match": "Team M vs Team N",
+        "bet": "Team M wins",
+        "outcome": "Win",
+        "odds": 1.8,
+        "details": {
+          "team_M": {
+            "league": "MLS",
+            "position": "2nd"
+          },
+          "team_N": {
+            "league": "MLS",
+            "position": "5th"
+          }
+        }
+      },
+      {
+        "match": "Team O vs Team P",
+        "bet": "Team O wins",
+        "outcome": "Loss",
+        "odds": 2.1,
+        "details": {
+          "team_O": {
+            "league": "Primeira Liga",
+            "position": "1st"
+          },
+          "team_P": {
+            "league": "Primeira Liga",
+            "position": "8th"
+          }
+        }
+      },
+      {
+        "match": "Team Q vs Team R",
+        "bet": "Draw",
+        "outcome": "Draw",
+        "odds": 3.1,
+        "details": {
+          "team_Q": {
+            "league": "Scottish Premiership",
+            "position": "1st"
+          },
+          "team_R": {
+            "league": "Scottish Premiership",
+            "position": "6th"
+          }
+        }
+      },
+      {
+        "match": "Team S vs Team T",
+        "bet": "Team S wins",
+        "outcome": "Win",
+        "odds": 1.6,
+        "details": {
+          "team_S": {
+            "league": "J1 League",
+            "position": "2nd"
+          },
+          "team_T": {
+            "league": "J1 League",
+            "position": "11th"
+          }
+        }
+      }
+    ]
+  }
+  
