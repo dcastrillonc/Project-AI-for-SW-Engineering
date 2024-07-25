@@ -41,7 +41,7 @@ export default function BetsListItem({ bet, type }) {
                 <td>{yourBet}</td>
                 <td>${bet.amount}</td>
                 <td>{bet.payed ? "Cashed" : "Not Cashed"}</td>
-                <td><a href={`/bets/winlose/${bet._id}`}>Details</a></td>
+                <td><a href={detailUrl}>Details</a></td>
             </tr>
         // </a>
     )
