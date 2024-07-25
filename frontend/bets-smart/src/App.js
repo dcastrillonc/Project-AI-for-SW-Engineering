@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import HomeComponent from './components/HomeComponent';
 import Profile from './components/Profile';
+import LiveScore from './components/LiveScore';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Insights from './components/Insights';
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/events" element={<EventsComponent />} />
           {/* <Route path="/bets" element={<Bets />} />*/}
           <Route path="/insights" element={<Insights />} /> 
+          <Route path="/livescores" element={<LiveScore />} />
         </Routes>
         <Footer />
       </Router>

@@ -1,34 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
-const LiveScoreDisplay = () => {
-  const [scores, setScores] = useState([]);
+function LiveScores() {
+    const [scores, setScores] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchScores = async () => {
-      try {
-        const { data } = await axios.get('/api/live-scores');
-        setScores(data.data); // Ajusta esto según la estructura de respuesta de SportMonks
-      } catch (error) {
-        console.error('Error fetching live scores:', error);
-      }
-    };
+    useEffect(() => {
+        const fetchScores = async () => {
+            setLoading(true);
+            setError(null);
+            try {
+                const res = await fetch('/livescores');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch scores. Status: ' + res.status);
+                }
+                const data = await res.json();
+                setScores(data.response);
+            } catch (error) {
+                setError('Failed to load live scores: ' + error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const intervalId = setInterval(fetchScores, 60000); // Refrescar cada 60 segundos
-    fetchScores(); // Fetch inicial al cargar el componente
+        fetchScores();
+        const interval = setInterval(fetchScores, 30000); // Update scores every 30 seconds
 
-    return () => clearInterval(intervalId);
-  }, []);
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, []);
 
-  return (
-    <div>
-      {scores.map((score) => (
-        <div key={score.id}>
-          {score.localteam.name} vs {score.visitorteam.name}: {score.scores.localteam_score} - {score.scores.visitorteam_score}
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
+    return (
+        <div>
+            <h2>Live Scores</h2>
+            {scores.length > 0 ? (
+                <ul>
+                    {scores.map((score) => (
+                        <li key={score.id}>
+                            {score.event}: {score.homeTeam} {score.homeScore} - {score.awayScore} {score.awayTeam}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No live scores available right now.</p>
+            )}
         </div>
-      ))}
-    </div>
-  );
-};
+    );
+}
 
-export default LiveScoreDisplay;
+export default LiveScores;
