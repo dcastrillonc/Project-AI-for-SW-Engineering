@@ -4,6 +4,7 @@ const User = require('../models/user-model');
 const WinLoseBet = require('../models/winlose-bet-model');
 const ResultBet = require('../models/result-bet-model');
 const authMiddleware = require('../middleware/auth-middleware');
+const { getFixtureById, getFixtureInfoById, getWinLoseBetStatus, ERROR_BET } = require('../utils/sportsApiUtils');
 
 
 // Place WinLoseBet
@@ -19,6 +20,22 @@ router.post("/winlose", authMiddleware, async (req, res) => {
             if(winLoseBet.amount < 1) {
                 return res.status(400).send({message: "Minimmum betting ammount is $1"});
             }
+            let fixtureInfo;
+            try {
+                fixtureInfo = await getFixtureInfoById(winLoseBet.fixtureId);
+            } catch(error) {
+                console.log(error);
+                return res.status(400).send({message: `Unable to fetch fixture with id ${winLoseBet.fixtureId}`});
+            }
+            
+            const homeTeamName = fixtureInfo.teams.home.name;
+            const awayTeamName = fixtureInfo.teams.away.name;
+            const status = fixtureInfo.fixture.status.short;
+            if(status !== "TBD" && status !== "NS") {
+                return res.status(400).send({message: "Match already started"});
+            }
+            winLoseBet.homeTeamName = homeTeamName;
+            winLoseBet.awayTeamName = awayTeamName;
             const user = await User.findById(req.user._id);
             const newBalance = user.balance - winLoseBet.amount;
             if(newBalance < 0) {
@@ -54,7 +71,23 @@ router.get("/winlose/:id", authMiddleware, async (req, res) => {
         if(winLoseBet.userId.toString() !== req.user._id.toString()) {
             return res.status(401).send({message: "Unauthorized"});
         }
-        return res.status(200).send(winLoseBet);
+        let fixtureInfo;
+        let status;
+        try {
+            fixtureInfo = await getFixtureInfoById(winLoseBet.fixtureId);
+            status = getWinLoseBetStatus(winLoseBet, fixtureInfo);
+        } catch(error) {
+            console.log(error);
+            status = ERROR_BET;
+        }
+
+        const resBody = {
+            bet: winLoseBet,
+            fixtureInfo,
+            status
+        };
+
+        return res.status(200).send(resBody);
     } catch (error) {
         console.log(error);
         return res.status(500).send({message: "Internal server error"});
@@ -77,6 +110,24 @@ router.post("/result", authMiddleware, async (req, res) => {
         if(resultBet.homeScore < 0 || resultBet.awayScore < 0) {
             return res.status(400).send({message: "Scores must be non-negative integers"});
         }
+
+        let fixtureInfo;
+        try {
+            fixtureInfo = await getFixtureInfoById(resultBet.fixtureId);
+        } catch(error) {
+            console.log(error);
+            return res.status(400).send({message: `Unable to fetch fixture with id ${resultBet.fixtureId}`});
+        }
+        
+        const homeTeamName = fixtureInfo.teams.home.name;
+        const awayTeamName = fixtureInfo.teams.away.name;
+        const status = fixtureInfo.fixture.status.short;
+        if(status !== "TBD" && status !== "NS") {
+            return res.status(400).send({message: "Match already started"});
+        }
+        resultBet.homeTeamName = homeTeamName;
+        resultBet.awayTeamName = awayTeamName;
+
         const user = await User.findById(req.user._id);
         const newBalance = user.balance - resultBet.amount;
         if(newBalance < 0) {
@@ -109,7 +160,24 @@ router.get("/result/:id", authMiddleware, async (req, res) => {
         if(resultBet.userId.toString() !== req.user._id.toString()) {
             return res.status(401).send({message: "Unauthorized"});
         }
-        return res.status(200).send(resultBet);
+
+        let fixtureInfo;
+        let status;
+        try {
+            fixtureInfo = await getFixtureInfoById(resultBet.fixtureId);
+            status = getWinLoseBetStatus(resultBet, fixtureInfo);
+        } catch(error) {
+            console.log(error);
+            status = ERROR_BET;
+        }
+
+        const resBody = {
+            bet: resultBet,
+            fixtureInfo,
+            status
+        };
+
+        return res.status(200).send(resBody);
     } catch (error) {
         return res.status(500).send({message: "Internal server error"});
     }
