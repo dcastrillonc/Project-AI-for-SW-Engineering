@@ -43,7 +43,7 @@ function MatchOddsModal({ open, handleClose, match }) {
     }
   }, [match]);
   console.log(odds);
-  const filteredOdds = odds?.filter(o => selectedBookkeeper ? o.bookmaker.name === selectedBookkeeper : true);
+  // const filteredOdds = odds?.filter(o => selectedBookkeeper ? o.bookmaker.name === selectedBookkeeper : true);
 
   return (
     <Modal
@@ -78,11 +78,11 @@ function MatchOddsModal({ open, handleClose, match }) {
                 </option>
               ))}
             </TextField>
-            {filteredOdds?.map((o) => (
+            {/* {filteredOdds?.map((o) => (
               <Typography key={o.bookmaker.name}>
                 {o.bookmaker.name}: {o.odds.map(odd => `${odd.label}: ${odd.value}`).join(', ')}
               </Typography>
-            ))}
+            ))} */}
           </>
         )}
         <Button onClick={handleClose}>Close</Button>

@@ -7,13 +7,13 @@ export default function ResetPasswordPage(props) {
         e.preventDefault();
         if(loading) return;
         const formData = new FormData(e.target);
-        const password = formData.get('password').trim();
+        const password = formData.get('password');
         const confirmPassword = formData.get('confirmPassword').trim();
 
         const token = window.location.search.replace(/^\?t=/, "");
 
-        if(password === "") {
-            alert("Please enter a password");
+        if(password.length < 6) {
+            alert("Password must be at least 6 characters long");
             return;
         }
 

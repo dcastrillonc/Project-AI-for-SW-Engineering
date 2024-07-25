@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import BetsPage from './pages/BetsPage';
+import TransactionsPage from './pages/TransactionsPage';
 
 function App() {
   // useEffect(() => {
@@ -29,6 +31,8 @@ function App() {
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/forgot-password' element={<ForgotPasswordPage />} />
           <Route path='/reset-password' element={<ResetPasswordPage />} />
+          <Route path='/bets' element={<BetsPage />} />
+          <Route path='/transactions' element={<TransactionsPage />} />
           {/* <Route path="/bets" element={<Bets />} />
           <Route path="/insights" element={<Insights />} /> */}
         </Routes>

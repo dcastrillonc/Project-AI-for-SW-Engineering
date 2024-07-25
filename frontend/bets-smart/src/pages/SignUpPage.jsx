@@ -64,7 +64,8 @@ export default function SignUpPage(props) {
                 <input type="text" placeholder="Email" name="email"  className="form-control"/>
                 <input type="password" placeholder="Password" name="password" className="form-control"/>
                 <input type="password" placeholder="Confirm Password" name="confirmPassword" className="form-control"/>
-                <button type="submit" className="">{loading ? "Loading..." : "Sign Up" }</button>
+                <button className="mt-3" type="submit">{loading ? "Loading..." : "Sign Up" }</button>
+                <p className="mt-3">Already have an account? <a href="/login">Login</a></p>
             </form>
         </div>
     )

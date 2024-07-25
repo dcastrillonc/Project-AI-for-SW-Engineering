@@ -12,20 +12,26 @@ export default function BetsList({ type }) {
         if(type === "winlose") {
             fetch("/api/v1/bets/winlose", {method: "get"}).then(res => {
                 if(res.status === 401 || res.status === 404) {
-                    alert("User is not loged in. Please login");
+                    window.location.href = "/login";
+                } else if(res.status === 200) {
+                    res.json().then(resJson => {
+                        setWinLoseBets(resJson);
+                    });
+                } else {
+                    alert("An error occurred while fetching bets");
                 }
-                res.json().then(resJson => {
-                    setWinLoseBets(resJson);
-                });
             });
         } else {
             fetch("/api/v1/bets/result", {method: "get"}).then(res => {
                 if(res.status === 401 || res.status === 404) {
-                    alert("User is not loged in. Please login");
+                    window.location.href = "/login";
+                } else if(res.status === 200) {
+                    res.json().then(resJson => {
+                        setWinLoseBets(resJson);
+                    });
+                } else {
+                    alert("An error occurred while fetching bets");
                 }
-                res.json().then(resJson => {
-                    setWinLoseBets(resJson);
-                });
             });
         }
     }, []);
