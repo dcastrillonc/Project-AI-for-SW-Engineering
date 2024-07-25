@@ -12,6 +12,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import BetsPage from './pages/BetsPage';
 import TransactionsPage from './pages/TransactionsPage';
+import BetDetailPage from './pages/BetDetailPage';
 
 function App() {
   // useEffect(() => {
@@ -32,6 +33,8 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPasswordPage />} />
           <Route path='/reset-password' element={<ResetPasswordPage />} />
           <Route path='/bets' element={<BetsPage />} />
+          <Route path='/bets/winlose/*' element={<BetDetailPage />} />
+          <Route path='/bets/result/*' element={<BetDetailPage />} />
           <Route path='/transactions' element={<TransactionsPage />} />
           {/* <Route path="/bets" element={<Bets />} />
           <Route path="/insights" element={<Insights />} /> */}

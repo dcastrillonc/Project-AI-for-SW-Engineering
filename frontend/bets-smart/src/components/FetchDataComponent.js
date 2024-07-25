@@ -38,118 +38,41 @@ const Status = styled('div')({
   marginTop: '10px',
 });
 
-function FetchDataComponent() { //{ sport, league }) {
+function FetchDataComponent({ sport, league }) {
 
 
-
-  const data2 = [
-    {
-      "fixture": {
-          "id": 1158769,
-          "referee": null,
-          "timezone": "UTC",
-          "date": "2024-07-30T00:00:00+00:00",
-          "timestamp": 1722297600,
-          "periods": {
-              "first": null,
-              "second": null
-          },
-          "venue": {
-              "id": 45,
-              "name": "Estadio Julio César Villagra",
-              "city": "Ciudad de Córdoba, Provincia de Córdoba"
-          },
-          "status": {
-              "long": "Not Started",
-              "short": "NS",
-              "elapsed": null
-          }
-      },
-      "league": {
-          "id": 128,
-          "name": "Liga Profesional Argentina",
-          "country": "Argentina",
-          "logo": "https://media.api-sports.io/football/leagues/128.png",
-          "flag": "https://media.api-sports.io/flags/ar.svg",
-          "season": 2024,
-          "round": "2nd Phase - 8"
-      },
-      "teams": {
-          "home": {
-              "id": 440,
-              "name": "Belgrano Cordoba",
-              "logo": "https://media.api-sports.io/football/teams/440.png",
-              "winner": null
-          },
-          "away": {
-              "id": 439,
-              "name": "Godoy Cruz",
-              "logo": "https://media.api-sports.io/football/teams/439.png",
-              "winner": null
-          }
-      },
-      "goals": {
-          "home": null,
-          "away": null
-      },
-      "score": {
-          "halftime": {
-              "home": null,
-              "away": null
-          },
-          "fulltime": {
-              "home": null,
-              "away": null
-          },
-          "extratime": {
-              "home": null,
-              "away": null
-          },
-          "penalty": {
-              "home": null,
-              "away": null
-          }
-      },
-      "events": [],
-      "lineups": [],
-      "statistics": [],
-      "players": []
-  },
-  ]
-
-
-  const [data, setData] = useState(data2);
+  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [winLoseBetMatch, setWinLoseBetMatch] = useState(null);
   const [scoreBetMatch, setScoreBetMatch] = useState(null);
 
-  // useEffect(() => {
-  //   if (sport && league && false) {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get(`https://v3.${sport}.api-sports.io/fixtures?league=${league}&season=2024`, {
-  //           headers: {
-  //             'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-  //             'x-rapidapi-host': `v3.${sport}.api-sports.io`,
-  //           },
-  //         });
-  //         const today = new Date();
-  //         const upcomingMatches = response.data.response
-  //           .filter(match => new Date(match.fixture.date) >= today)
-  //           .sort((a, b) => new Date(a.fixture.date) - new Date(b.fixture.date))
-  //           .slice(0, 10);
-  //         setData(upcomingMatches);
-  //       } catch (error) {
-  //         setError('Error fetching data');
-  //         console.error('Error fetching data:', error);
-  //       }
-  //     };
+  useEffect(() => {
+    if (sport && league) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`https://v3.${sport}.api-sports.io/fixtures?league=${league}&season=2024`, {
+            headers: {
+              'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
+              'x-rapidapi-host': `v3.${sport}.api-sports.io`,
+            },
+          });
+          const today = new Date();
+          const upcomingMatches = response.data.response
+            .filter(match => new Date(match.fixture.date) >= today)
+            .sort((a, b) => new Date(a.fixture.date) - new Date(b.fixture.date))
+            .slice(0, 10);
+          setData(upcomingMatches);
+        } catch (error) {
+          setError('Error fetching data');
+          console.error('Error fetching data:', error);
+        }
+      };
 
-  //     fetchData();
-  //   }
-  // }, [sport, league]);
+      fetchData();
+    }
+  }, [sport, league]);
 
   const handleCardClick = (match) => {
     setSelectedMatch(match);
