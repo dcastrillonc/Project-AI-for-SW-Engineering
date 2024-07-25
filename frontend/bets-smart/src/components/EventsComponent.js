@@ -39,7 +39,7 @@ function EventsComponent() {
   const [loadingLeagues, setLoadingLeagues] = useState(false);
   const [errorCountries, setErrorCountries] = useState(null);
   const [errorLeagues, setErrorLeagues] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(true);
 
   useEffect(() => {
     if (sport) {
