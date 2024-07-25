@@ -7,6 +7,7 @@ import HomeComponent from './components/HomeComponent';
 import Profile from './components/Profile';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Insights from './components/Insights';
+import LiveScoreDisplay from './components/LiveScore';
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/events" element={<EventsComponent />} />
           {/* <Route path="/bets" element={<Bets />} />*/}
-          <Route path="/insights" element={<Insights />} /> 
+          <Route path="/insights" element={<Insights />} />
+          <Route path="/live_score" element={<LiveScoreDisplay />} />  
         </Routes>
         <Footer />
       </Router>

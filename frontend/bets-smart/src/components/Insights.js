@@ -10,10 +10,10 @@ const InsightsComponent = () => {
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        const response = await axios.get('/api/insights');
+        const response = await axios.get('/api/insights'); // Ensure the correct API endpoint
         // Ensure the response data is an array
-        if (Array.isArray(response.data.data)) {
-          setInsights(response.data.data);
+        if (Array.isArray(response.data)) {
+          setInsights(response.data);
         } else {
           throw new Error('Unexpected data format');
         }
@@ -67,11 +67,7 @@ const InsightsComponent = () => {
           <Box key={index} sx={{ mt: 4 }}>
             <Typography variant="h5">Summary</Typography>
             <Typography variant="body1">
-              {typeof insight.summary === 'object' ? JSON.stringify(insight.summary) : insight.summary}
-            </Typography>
-            <Typography variant="h5">Cost</Typography>
-            <Typography variant="body1">
-              {typeof insight.cost === 'object' ? JSON.stringify(insight.cost) : insight.cost}
+              {typeof insight === 'object' ? JSON.stringify(insight) : insight}
             </Typography>
           </Box>
         ))}
