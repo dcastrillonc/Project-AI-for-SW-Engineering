@@ -54,7 +54,7 @@ router.post('/logout', (req, res) => {
 });
 
 // Forgot password route
-router.post('/auth/forgot-password', async (req, res) => {
+router.post('/forgot-password', async (req, res) => {
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
@@ -83,7 +83,7 @@ router.post('/auth/forgot-password', async (req, res) => {
 });
 
 // Reset password route
-router.post('/auth/reset-password', async (req, res) => {
+router.post('/reset-password', async (req, res) => {
     try {
         const { token, password } = req.body;
         const secret = process.env.PASSWORD_RESET_JWT_SECRET;
