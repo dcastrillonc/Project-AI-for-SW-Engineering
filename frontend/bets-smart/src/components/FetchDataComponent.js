@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container } from '@mui/material';
 import { styled } from '@mui/system';
+import MatchOddsModal from './MatchOddsModal'; // Import the modal component
 
 const StyledCard = styled(Card)({
   margin: '20px auto',
   maxWidth: 600,
+  cursor: 'pointer', // Add cursor pointer for cards
 });
 
 const Logo = styled(Avatar)({
@@ -28,10 +30,17 @@ const DateText = styled('div')({
   fontSize: '1.2em',
 });
 
+const Status = styled('div')({
+  textAlign: 'center',
+  fontSize: '1em',
+  marginTop: '10px',
+});
 
 function FetchDataComponent({ sport, league }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (sport && league) {
@@ -40,8 +49,8 @@ function FetchDataComponent({ sport, league }) {
           const response = await axios.get(`https://v3.${sport}.api-sports.io/fixtures?league=${league}&season=2024`, {
             headers: {
               'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-              'x-rapidapi-host': `v3.${sport}.api-sports.io`
-            }
+              'x-rapidapi-host': `v3.${sport}.api-sports.io`,
+            },
           });
           const today = new Date();
           const upcomingMatches = response.data.response
@@ -59,6 +68,15 @@ function FetchDataComponent({ sport, league }) {
     }
   }, [sport, league]);
 
+  const handleCardClick = (match) => {
+    setSelectedMatch(match);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
   if (error) {
     return <p>{error}</p>;
   }
@@ -74,7 +92,7 @@ function FetchDataComponent({ sport, league }) {
         const date = new Date(fixture.date).toLocaleString();
 
         return (
-          <StyledCard key={fixture.id}>
+          <StyledCard key={fixture.id} onClick={() => handleCardClick(match)}>
             <CardContent>
               <DateText>
                 {date}
@@ -98,10 +116,20 @@ function FetchDataComponent({ sport, league }) {
                   </TeamName>
                 </Grid>
               </Grid>
+              <Status>
+                {fixture.status.long}
+              </Status>
             </CardContent>
           </StyledCard>
         );
       })}
+      {selectedMatch && (
+        <MatchOddsModal
+          open={modalOpen}
+          handleClose={handleCloseModal}
+          match={selectedMatch}
+        />
+      )}
     </Container>
   );
 }

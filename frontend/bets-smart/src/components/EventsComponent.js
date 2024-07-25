@@ -16,7 +16,7 @@ import FetchDataComponent from "./FetchDataComponent";
 
 const sports = [
   "football",
-  "afl",
+  /*"afl",
   "baseball",
   "basketball",
   "formula-1",
@@ -26,7 +26,7 @@ const sports = [
   "nba",
   "nfl",
   "rugby",
-  "volleyball",
+  "volleyball",*/
 ];
 
 function EventsComponent() {
