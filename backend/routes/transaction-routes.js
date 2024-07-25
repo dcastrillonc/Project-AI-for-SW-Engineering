@@ -5,7 +5,7 @@ const User = require('../models/user-model');
 const WinLoseBet = require('../models/winlose-bet-model');
 const ResultBet = require('../models/result-bet-model');
 const authMiddleware = require('../middleware/auth-middleware');
-const { getFixtureInfoById, WIN_BET, getResultBetStatus } = require('../utils/sportsApiUtils');
+const { getFixtureInfoById, WIN_BET, getResultBetStatus, getWinLoseBetStatus } = require('../utils/sportsApiUtils');
 
 // Place balance transaction
 router.post('/balance', authMiddleware, async (req, res) => {
@@ -60,8 +60,11 @@ router.post("/cash-bet", authMiddleware, async (req, res) => {
             const bet = await WinLoseBet.findById(betId);
             const user = await User.findById(userId);
             let fixture;
+            if(bet.payed) {
+                return res.status(400).send({message: "You have already cashed this bet"});
+            }
             try {
-                fixture = getFixtureInfoById(bet.fixtureId);
+                fixture = await getFixtureInfoById(bet.fixtureId);
             } catch(error) {
                 return res.status(400).send({message: `Unable to fetch fixture with id ${bet.fixtureId}`});
             }
@@ -69,19 +72,19 @@ router.post("/cash-bet", authMiddleware, async (req, res) => {
             if(status !== WIN_BET) {
                 return res.status(400).send({message: `You have not won this bet`});
             }
-            const newBalance = user.balance + bet.amount;
+            const newBalance = user.balance + (2 * bet.amount);
             user.balance = newBalance;
             const transaction = new Transaction({
                 userId,
                 balance: newBalance,
-                amount: bet.amount,
+                amount: 2 * bet.amount,
                 transactionType: "bet",
                 betId: bet._id
             });
 
             transaction.save();
 
-            bet.paid = true;
+            bet.payed = true;
             await bet.save();
             await user.save();
             return res.status(200).send(transaction);
@@ -90,7 +93,7 @@ router.post("/cash-bet", authMiddleware, async (req, res) => {
             const user = await User.findById(userId);
             let fixture;
             try {
-                fixture = getFixtureInfoById(bet.fixtureId);
+                fixture = await getFixtureInfoById(bet.fixtureId);
             } catch(error) {
                 return res.status(400).send({message: `Unable to fetch fixture with id ${bet.fixtureId}`});
             }
@@ -98,19 +101,19 @@ router.post("/cash-bet", authMiddleware, async (req, res) => {
             if(status !== WIN_BET) {
                 return res.status(400).send({message: `You have not won this bet`});
             }
-            const newBalance = user.balance + bet.amount;
+            const newBalance = user.balance + (2 * bet.amount);
             user.balance = newBalance;
             const transaction = new Transaction({
                 userId,
                 balance: newBalance,
-                amount: bet.amount,
+                amount: 2 * bet.amount,
                 transactionType: "bet",
                 betId: bet._id
             });
 
             transaction.save();
 
-            bet.paid = true;
+            bet.payed = true;
             await bet.save();
             await user.save();
             return res.status(200).send(transaction);

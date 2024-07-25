@@ -3,8 +3,9 @@ const router = express.Router();
 const User = require('../models/user-model');
 const WinLoseBet = require('../models/winlose-bet-model');
 const ResultBet = require('../models/result-bet-model');
+const Transaction = require('../models/transaction-model');
 const authMiddleware = require('../middleware/auth-middleware');
-const { getFixtureById, getFixtureInfoById, getWinLoseBetStatus, ERROR_BET } = require('../utils/sportsApiUtils');
+const { getFixtureById, getFixtureInfoById, getWinLoseBetStatus, ERROR_BET, getResultBetStatus } = require('../utils/sportsApiUtils');
 
 
 // Place WinLoseBet
@@ -31,16 +32,25 @@ router.post("/winlose", authMiddleware, async (req, res) => {
             const homeTeamName = fixtureInfo.teams.home.name;
             const awayTeamName = fixtureInfo.teams.away.name;
             const status = fixtureInfo.fixture.status.short;
-            if(status !== "TBD" && status !== "NS") {
-                return res.status(400).send({message: "Match already started"});
-            }
+            // if(status !== "TBD" && status !== "NS") {
+            //     return res.status(400).send({message: "Match already started"});
+            // }
             winLoseBet.homeTeamName = homeTeamName;
             winLoseBet.awayTeamName = awayTeamName;
             const user = await User.findById(req.user._id);
             const newBalance = user.balance - winLoseBet.amount;
+
             if(newBalance < 0) {
                 return res.status(400).send({message: "Insufficient funds"});
             }
+            const trans = new Transaction({
+                userId: user._id,
+                amount: -winLoseBet.amount,
+                balance: newBalance,
+                transactionType: "bet",
+                betId: winLoseBet.id
+            });
+            await trans.save();
             await winLoseBet.save();
             user.balance = newBalance;
             await user.save();
@@ -122,9 +132,9 @@ router.post("/result", authMiddleware, async (req, res) => {
         const homeTeamName = fixtureInfo.teams.home.name;
         const awayTeamName = fixtureInfo.teams.away.name;
         const status = fixtureInfo.fixture.status.short;
-        if(status !== "TBD" && status !== "NS") {
-            return res.status(400).send({message: "Match already started"});
-        }
+        // if(status !== "TBD" && status !== "NS") {
+        //     return res.status(400).send({message: "Match already started"});
+        // }
         resultBet.homeTeamName = homeTeamName;
         resultBet.awayTeamName = awayTeamName;
 
@@ -133,6 +143,16 @@ router.post("/result", authMiddleware, async (req, res) => {
         if(newBalance < 0) {
             return res.status(400).send({message: "Insufficient funds"});
         }
+
+        const trans = new Transaction({
+            userId: user._id,
+            amount: -resultBet.amount,
+            balance: newBalance,
+            transactionType: "bet",
+            betId: resultBet.id
+        });
+        await trans.save();
+
         await resultBet.save();
         user.balance = newBalance;
         await user.save();
@@ -165,7 +185,7 @@ router.get("/result/:id", authMiddleware, async (req, res) => {
         let status;
         try {
             fixtureInfo = await getFixtureInfoById(resultBet.fixtureId);
-            status = getWinLoseBetStatus(resultBet, fixtureInfo);
+            status = getResultBetStatus(resultBet, fixtureInfo);
         } catch(error) {
             console.log(error);
             status = ERROR_BET;

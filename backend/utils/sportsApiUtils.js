@@ -61,18 +61,30 @@ function getResultBetStatus(resultBet, fixtureInfo) {
         const fixtureStatus = fixtureInfo.fixture.status.short;
         let homeScore;
         let awayScore;
-        if(fixtureStatus === "FT" && fixtureInfo.score.fulltime.home && fixtureInfo.score.fulltime.away) {
+        if(
+            (fixtureStatus === "FT") && 
+            typeof fixtureInfo.score.fulltime.home === "number" &&
+            typeof fixtureInfo.score.fulltime.away === "number"
+        ) {
             homeScore = fixtureInfo.score.fulltime.home;
             awayScore = fixtureInfo.score.fulltime.away;
-        } else if(fixtureStatus === "AET" && fixtureInfo.score.extratime.home && fixtureInfo.score.extratime.away) {
+        } else if(
+            (fixtureStatus === "AET") &&
+            typeof fixtureInfo.score.extratime.home === "number" &&
+            typeof fixtureInfo.score.extratime.away === "number"
+        ) {
             homeScore = fixtureInfo.score.extratime.home;
             awayScore = fixtureInfo.score.extratime.away;
-        } else if(fixtureStatus === "PEN" && fixtureInfo.score.penalty.home && fixtureInfo.score.penalty.away) {
+        } else if(
+            (fixtureStatus === "PEN") &&
+            typeof fixtureInfo.score.penalty.home === "number" &&
+            typeof fixtureInfo.score.penalty.away === "number"
+        ) {
             homeScore = fixtureInfo.score.penalty.home;
             awayScore = fixtureInfo.score.penalty.away;
         }
 
-        if(homeScore && awayScore) {
+        if((typeof homeScore === "number") && (typeof awayScore === "number")) {
             if(homeScore === resultBet.homeScore && awayScore === resultBet.awayScore) {
                 return WIN_BET
             } else {

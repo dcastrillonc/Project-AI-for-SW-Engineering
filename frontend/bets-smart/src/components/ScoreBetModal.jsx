@@ -20,12 +20,12 @@ export default function ScoreBetModal( { match, setMatch } ) {
         return;
     }
 
-    if(!homeScoreNum || homeScoreNum < 0) {
+    if(!homeScoreNum < 0 || isNaN(homeScoreNum)) {
         alert("Invalid score");
         return;
     }
 
-    if(!awayScoreNum || awayScoreNum < 0) {
+    if(awayScoreNum < 0 || isNaN(homeScoreNum)) {
         alert("Invalid score");
         return;
     }

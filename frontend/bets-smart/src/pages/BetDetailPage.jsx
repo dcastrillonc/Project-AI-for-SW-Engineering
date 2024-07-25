@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { Container } from "@mui/system";
 import { useEffect, useState } from "react";
 
@@ -38,6 +39,35 @@ export default function BetDetailPage() {
         });
     }, []);
 
+    const cashBetClickHandler = () => {
+        if(betStatus !== "win") {
+            alert("You have not won this bet yet");
+            return;
+        } 
+
+        const betData = {
+            betType: type,
+            betId: bet._id,
+        };
+
+        fetch("/api/v1/transactions/cash-bet", {
+            method: "post",
+            headers: new Headers({"Content-Type": "application/json"}),
+            body: JSON.stringify(betData),
+        }).then(res => {
+            if(res.status === 200) {
+                alert("Bet cash successful");
+                window.location.reload();
+            } else if(res.status === 401) {
+                res.json().then(data => {
+                    alert(data.message);
+                })
+            } else {
+                alert("An error occured when cashing the bet. Try again");
+            }
+        });
+    }
+
     if(!bet) return (<p>Loading...</p>);
     const matchStr = bet.homeTeamName + " vs. " + bet.awayTeamName;
     const date = new Date(bet.UTCDate);
@@ -60,12 +90,20 @@ export default function BetDetailPage() {
     } else {
         yourBet = "Score: " + bet.homeTeamName + " " +  bet.homeScore + " - " + bet.awayScore + " " + bet.awayTeamName; 
     }
+
+    let showCashBet = false;
+    if(betStatus === "win" && !bet.payed) {
+        showCashBet = true;
+    }
+
+    let cashedInfo = bet.payed ? "Cashed" : "Not cashed";
     return (
         <Container>
             <h1>Your bet</h1>
             <p>Bet ID: {bet._id}</p>
             <p>Bet Placement Date: {dateStr}</p>
             <p>Yout bet: {yourBet}</p>
+            <p>{cashedInfo}</p>
             <p>Bet status: {betStatusStr}</p>
             <h2>Match information</h2>
             <p>Match: {matchStr}</p>
@@ -77,6 +115,10 @@ export default function BetDetailPage() {
                 
             ) : <></> }
             <p></p>
+            {
+                showCashBet ? <Button variant="outlined" onClick={cashBetClickHandler}>Cash bet!</Button> : <></>
+            }
+            
         </Container>
     )
 }
