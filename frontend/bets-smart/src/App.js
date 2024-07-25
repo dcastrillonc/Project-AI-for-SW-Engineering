@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+
 import './App.css';
+import EventsComponent from './components/EventsComponent';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import HomeComponent from './components/HomeComponent';
+import Profile from './components/Profile';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Insights from './components/Insights';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomeComponent />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/events" element={<EventsComponent />} />
+          {/* <Route path="/bets" element={<Bets />} />*/}
+          <Route path="/insights" element={<Insights />} /> 
+        </Routes>
+        <Footer />
+      </Router>
     </div>
   );
 }
