@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, CircularProgress, Typography, Box } from '@mui/material';
 import axios from 'axios';
+import ReactMarkdown from 'react-markdown';
 
 const InsightsComponent = () => {
   const [insights, setInsights] = useState([]);
@@ -67,7 +68,7 @@ const InsightsComponent = () => {
           <Box key={index} sx={{ mt: 4 }}>
             <Typography variant="h5">Summary</Typography>
             <Typography variant="body1">
-              {typeof insight === 'object' ? JSON.stringify(insight) : insight}
+              <ReactMarkdown>{typeof insight === 'object' ? JSON.stringify(insight) : insight}</ReactMarkdown>
             </Typography>
           </Box>
         ))}
