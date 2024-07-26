@@ -29,4 +29,4 @@ const Profile = () => {
   )
 }
 
-export default UserProfile;
+export default Profile;
