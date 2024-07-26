@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container } from '@mui/material';
 import { styled } from '@mui/system';
-import MatchOddsModal from './MatchOddsModal'; // Import the modal component
 
 const StyledCard = styled(Card)({
   margin: '20px auto',
@@ -40,8 +39,6 @@ function LiveScores() {
   const [liveMatches, setLiveMatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedMatch, setSelectedMatch] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchLiveMatches = async () => {
@@ -67,14 +64,7 @@ function LiveScores() {
     fetchLiveMatches();
   }, []);
 
-  const handleCardClick = (match) => {
-    setSelectedMatch(match);
-    setModalOpen(true);
-  };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
 
   if (loading) {
     return <CircularProgress />;
@@ -95,7 +85,7 @@ function LiveScores() {
             const date = new Date(fixture.date).toLocaleString();
 
             return (
-              <StyledCard key={fixture.id} onClick={() => handleCardClick(match)}>
+              <StyledCard key={fixture.id} >
                 <CardContent>
                   <DateText>
                     {date}
@@ -127,13 +117,6 @@ function LiveScores() {
             );
           })}
         </Grid>
-      )}
-      {selectedMatch && (
-        <MatchOddsModal
-          open={modalOpen}
-          handleClose={handleCloseModal}
-          match={selectedMatch}
-        />
       )}
     </Container>
   );
