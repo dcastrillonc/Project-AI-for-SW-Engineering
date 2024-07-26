@@ -11,7 +11,7 @@ const InsightsComponent = () => {
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        const response = await axios.get('/api/insights'); // Ensure the correct API endpoint
+        const response = await axios.get('http://localhost:5001/api/insights'); // Ensure the correct API endpoint
         // Ensure the response data is an array
         if (Array.isArray(response.data)) {
           setInsights(response.data);
