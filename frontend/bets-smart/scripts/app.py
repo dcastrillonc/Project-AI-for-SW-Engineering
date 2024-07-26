@@ -2,9 +2,11 @@ import os
 import json
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, jsonify
+from flask_cors import CORS  # Import CORS
 from autogen import ConversableAgent, initiate_chats
 
 app = Flask(__name__)
+CORS(app)  # Apply CORS to the Flask app
 
 # Load environment variables
 load_dotenv(find_dotenv())
@@ -119,4 +121,4 @@ def api_insights():
     return jsonify(insights_summary)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
