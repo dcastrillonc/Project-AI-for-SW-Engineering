@@ -15,6 +15,7 @@ import BetsPage from './pages/BetsPage';
 import TransactionsPage from './pages/TransactionsPage';
 import BetDetailPage from './pages/BetDetailPage';
 import InsightsComponent from './components/Insights';
+import LiveScoreDisplay from './components/LiveScore';
 
 function App() {
   // useEffect(() => {

@@ -8,15 +8,18 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  maxHeight: '80vh', // Maximum height for the modal content
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
+  overflowY: 'auto', // Enable vertical scrolling
 };
 
 function MatchOddsModal({ open, handleClose, match }) {
-  const [odds, setOdds] = useState(null);
+  const [odds, setOdds] = useState([]);
   const [bookkeepers, setBookkeepers] = useState([]);
   const [selectedBookkeeper, setSelectedBookkeeper] = useState('');
+  const [selectedBookkeeperOdds, setSelectedBookkeeperOdds] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -27,12 +30,12 @@ function MatchOddsModal({ open, handleClose, match }) {
           const response = await axios.get(`https://v3.football.api-sports.io/odds?fixture=${match.fixture.id}`, {
             headers: {
               'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-              'x-rapidapi-host': `v3.football.api-sports.io`,
+              'x-rapidapi-host': 'v3.football.api-sports.io',
             },
           });
-          setOdds(response.data.response[0]);
-          
-          setBookkeepers(Array.from(new Set(response.data.response.map(odds => odds.bookmaker.name))));
+          const oddsData = response.data.response[0];
+          setOdds(oddsData.bookmakers);
+          setBookkeepers([...new Set(oddsData.bookmakers.map((bk) => bk.name))]);
         } catch (error) {
           console.error('Error fetching odds:', error);
         } finally {
@@ -42,8 +45,15 @@ function MatchOddsModal({ open, handleClose, match }) {
       fetchOdds();
     }
   }, [match]);
-  console.log(odds);
-  // const filteredOdds = odds?.filter(o => selectedBookkeeper ? o.bookmaker.name === selectedBookkeeper : true);
+
+  useEffect(() => {
+    if (selectedBookkeeper) {
+      const bookmakerOdds = odds.find((o) => o.name === selectedBookkeeper);
+      setSelectedBookkeeperOdds(bookmakerOdds);
+    } else {
+      setSelectedBookkeeperOdds(null);
+    }
+  }, [selectedBookkeeper, odds]);
 
   return (
     <Modal
@@ -72,17 +82,28 @@ function MatchOddsModal({ open, handleClose, match }) {
               }}
             >
               <option value="">All Bookkeepers</option>
-              {bookkeepers.map(name => (
+              {bookkeepers.map((name) => (
                 <option key={name} value={name}>
                   {name}
                 </option>
               ))}
             </TextField>
-            {/* {filteredOdds?.map((o) => (
-              <Typography key={o.bookmaker.name}>
-                {o.bookmaker.name}: {o.odds.map(odd => `${odd.label}: ${odd.value}`).join(', ')}
-              </Typography>
-            ))} */}
+            {selectedBookkeeperOdds ? (
+              <div>
+                {selectedBookkeeperOdds.bets.map((bet) => (
+                  <div key={bet.id}>
+                    <Typography variant="subtitle1">{bet.name}</Typography>
+                    {bet.values.map((value) => (
+                      <Typography key={value.value}>
+                        {value.value}: {value.odd}
+                      </Typography>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Typography>No bets available for selected bookmaker.</Typography>
+            )}
           </>
         )}
         <Button onClick={handleClose}>Close</Button>
