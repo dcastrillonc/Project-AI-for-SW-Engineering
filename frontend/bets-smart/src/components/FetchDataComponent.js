@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import MatchOddsModal from './MatchOddsModal'; // Import the modal component
+import WinLoseBetModal from './WinLoseBetModal';
+import ScoreBetModal from './ScoreBetModal';
 
 const StyledCard = styled(Card)({
   margin: '20px auto',
@@ -37,10 +39,14 @@ const Status = styled('div')({
 });
 
 function FetchDataComponent({ sport, league }) {
+
+
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [winLoseBetMatch, setWinLoseBetMatch] = useState(null);
+  const [scoreBetMatch, setScoreBetMatch] = useState(null);
 
   useEffect(() => {
     if (sport && league) {
@@ -77,6 +83,16 @@ function FetchDataComponent({ sport, league }) {
     setModalOpen(false);
   };
 
+  const handleWinLoseBetClick = (match) => {
+    setWinLoseBetMatch(match);
+    setScoreBetMatch(null);
+  }
+
+  const handleScoreBetClick = (match) => {
+    setScoreBetMatch(match);
+    setWinLoseBetMatch(null);
+  }
+
   if (error) {
     return <p>{error}</p>;
   }
@@ -92,7 +108,7 @@ function FetchDataComponent({ sport, league }) {
         const date = new Date(fixture.date).toLocaleString();
 
         return (
-          <StyledCard key={fixture.id} onClick={() => handleCardClick(match)}>
+          <StyledCard key={fixture.id} /*onClick={() => handleCardClick(match)}*/>
             <CardContent>
               <DateText>
                 {date}
@@ -116,6 +132,19 @@ function FetchDataComponent({ sport, league }) {
                   </TeamName>
                 </Grid>
               </Grid>
+              <Grid container spacing={2} alignItems="center" className='mt-3'>
+                <Grid item>
+                  <Button variant="outlined" onClick={() => handleWinLoseBetClick(match)}>Place WinLose Bet</Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="outlined" onClick={() => handleScoreBetClick(match)}>Place Score Bet</Button>
+                </Grid>
+                <Grid item>
+                </Grid>
+                <Grid item>
+                  <Button variant='outlined' onClick={() => handleCardClick(match)}>See ods</Button>
+                </Grid>
+              </Grid>
               <Status>
                 {fixture.status.long}
               </Status>
@@ -130,6 +159,12 @@ function FetchDataComponent({ sport, league }) {
           match={selectedMatch}
         />
       )}
+      {
+        winLoseBetMatch ? <WinLoseBetModal match={winLoseBetMatch} setMatch={setWinLoseBetMatch} /> : <></>
+      }
+      {
+        scoreBetMatch ? <ScoreBetModal match={scoreBetMatch} setMatch={setScoreBetMatch} /> : <></>
+      }
     </Container>
   );
 }

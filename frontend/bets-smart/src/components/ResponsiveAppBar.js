@@ -14,12 +14,32 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
-const pages = ['Events', 'Bets', 'Insights','Live Score'];
+const pages = ['Events', 'LiveScores', 'Bets', 'Insights', "Transactions"];
 const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [logedIn, setLogedIn] = React.useState(false);
+
+  React.useEffect(() => {
+    fetch("/api/v1/users").then(res => {
+      if(res.status === 200) setLogedIn(true);
+      else setLogedIn(false);
+    });
+  }, []);
+
+  const handleLogout = () => {
+    fetch("/api/v1/auth/logout", {method: "post"}).then(res => {
+      if(res.status === 200) {
+        setLogedIn(false);
+        window.location.href = "/";
+      } else {
+        res.json().then(data => console.log(data));
+        alert("An error occurred when trying to logout. Plese close all the browser tabs to logout.");
+      }
+    });
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -129,38 +149,46 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" component={Link} to={`/${setting.toLowerCase()}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
-                    {setting}
+          { logedIn ? <>  
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" component={Button} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+                      Profile
+                    </Link>
                   </Typography>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" component={Button} onClick={handleLogout} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </> : <>
+            <a href='/login' className='me-3'>Login</a><a href='/signup'>Signup</a>
+          </>}
         </Toolbar>
       </Container>
     </AppBar>

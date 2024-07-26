@@ -11,6 +11,8 @@ const transactionSchema = new mongoose.Schema({
     UTCDate: {type: Date, required: true, default: Date.now},
     amount: {type: Number, required: true},
     balance: {type: Number, required: true},
+    transactionType: {type: String, required: true, enum: {values: ["balance", "bet"]}},
+    betId: {type: String, required: false}
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);

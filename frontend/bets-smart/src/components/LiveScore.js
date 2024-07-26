@@ -1,34 +1,125 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container } from '@mui/material';
+import { styled } from '@mui/system';
 
-const LiveScoreDisplay = () => {
-  const [scores, setScores] = useState([]);
+const StyledCard = styled(Card)({
+  margin: '20px auto',
+  maxWidth: 600,
+  cursor: 'pointer', // Add cursor pointer for cards
+});
+
+const Logo = styled(Avatar)({
+  width: 60,
+  height: 60,
+});
+
+const TeamName = styled('div')({
+  textAlign: 'center',
+});
+
+const Score = styled('div')({
+  textAlign: 'center',
+  fontSize: '1.5em',
+  fontWeight: 'bold',
+});
+
+const DateText = styled('div')({
+  textAlign: 'center',
+  fontSize: '1.2em',
+});
+
+const Status = styled('div')({
+  textAlign: 'center',
+  fontSize: '1em',
+  marginTop: '10px',
+});
+
+function LiveScores() {
+  const [liveMatches, setLiveMatches] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchScores = async () => {
+    const fetchLiveMatches = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const { data } = await axios.get('/api/live-scores');
-        setScores(data.data); // Ajusta esto según la estructura de respuesta de SportMonks
-      } catch (error) {
-        console.error('Error fetching live scores:', error);
+        // Replace with your actual API endpoint
+        const response = await axios.get(`https://v3.football.api-sports.io/fixtures?live=all`, {
+          headers: {
+            'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
+            'x-rapidapi-host': 'api.example.com',
+          },
+        });
+        setLiveMatches(response.data.response); // Extract the response array from the response object
+      } catch (err) {
+        setError('Error fetching live matches');
+        console.error('Error fetching live matches:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const intervalId = setInterval(fetchScores, 60000); // Refrescar cada 60 segundos
-    fetchScores(); // Fetch inicial al cargar el componente
-
-    return () => clearInterval(intervalId);
+    fetchLiveMatches();
   }, []);
 
-  return (
-    <div>
-      {scores.map((score) => (
-        <div key={score.id}>
-          {score.localteam.name} vs {score.visitorteam.name}: {score.scores.localteam_score} - {score.scores.visitorteam_score}
-        </div>
-      ))}
-    </div>
-  );
-};
 
-export default LiveScoreDisplay;
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
+  return (
+    <Container>
+      {liveMatches.length === 0 ? (
+        <Typography>No live matches at the moment.</Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {liveMatches.map(match => {
+            const { fixture, teams, goals } = match;
+            const date = new Date(fixture.date).toLocaleString();
+
+            return (
+              <StyledCard key={fixture.id} >
+                <CardContent>
+                  <DateText>
+                    {date}
+                  </DateText>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={5}>
+                      <TeamName>
+                        <Logo src={teams.home.logo} alt={teams.home.name} />
+                        <Typography variant="h6">{teams.home.name}</Typography>
+                      </TeamName>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Score>
+                        {goals.home !== null ? `${goals.home} - ${goals.away}` : '-'}
+                      </Score>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <TeamName>
+                        <Logo src={teams.away.logo} alt={teams.away.name} />
+                        <Typography variant="h6">{teams.away.name}</Typography>
+                      </TeamName>
+                    </Grid>
+                  </Grid>
+                  <Status>
+                    {fixture.status.long}
+                  </Status>
+                </CardContent>
+              </StyledCard>
+            );
+          })}
+        </Grid>
+      )}
+    </Container>
+  );
+}
+
+export default LiveScores;

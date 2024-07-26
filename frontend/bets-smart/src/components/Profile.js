@@ -1,85 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Card, CardContent, Typography, CircularProgress, Container, Button } from '@mui/material';
-import { styled } from '@mui/system';
-import EditProfile from './EditProfile';
+import React, { useEffect, useState } from 'react'
 
-const StyledCard = styled(Card)({
-  margin: '20px auto',
-  maxWidth: 600,
-});
-
-const UserProfile = () => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [editOpen, setEditOpen] = useState(false);
+const Profile = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await axios.get('/api/v1/users', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        setUserData(response.data);
-      } catch (err) {
-        setError('Error fetching user data');
-        console.error('Error fetching user data:', err);
-      } finally {
-        setLoading(false);
+    fetch("/api/v1/users").then(res => {
+      if(res.status === 200) {
+        res.json().then(data => setUser(data));
+      } else if(res.status === 401 || res.status === 404) {
+        window.location.href = "/login";
+      } else {
+        alert("An error occured when fetching user information");
       }
-    };
-
-    fetchUserData();
+    });
   }, []);
 
-  const handleEditOpen = () => {
-    setEditOpen(true);
-  };
-
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
-
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <Typography color="error">{error}</Typography>;
-  }
-
-  if (!userData) {
-    return null;
+  if(!user) {
+    return <p>Loading...</p>;
   }
 
   return (
-    <Container>
-      <StyledCard>
-        <CardContent>
-          <Typography variant="h5" gutterBottom>
-            User Profile
-          </Typography>
-          <Typography variant="body1"><strong>Name:</strong> {userData.name}</Typography>
-          <Typography variant="body1"><strong>Email:</strong> {userData.email}</Typography>
-          <Typography variant="body1"><strong>Account Balance:</strong> ${userData.accountBalance}</Typography>
-          <Button variant="contained" color="primary" onClick={handleEditOpen}>
-            Edit Profile
-          </Button>
-        </CardContent>
-      </StyledCard>
-      <EditProfile
-        open={editOpen}
-        handleClose={handleEditClose}
-        userData={userData}
-        setUserData={setUserData}
-      />
-    </Container>
-  );
-};
+    <div>
+      <h1>Profile</h1>
+      <p>Email: {user.email}</p>
+      <p>Name: {user.name}</p>
+      <p>Balance: {user.balance}</p>
+    </div>
+  )
+}
 
-export default UserProfile;
+export default Profile;

@@ -20,16 +20,21 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-// Handle login form submission
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
-  // Placeholder for actual authentication logic
-  if (username === 'admin' && password === 'password') {
-    res.send('Login successful!');
-  } else {
-    res.send('Invalid username or password.');
+  try {
+    const user = await User.findOne({ email: username });
+    if (user && await user.comparePassword(password)) {
+      res.send('Login successful!');
+    } else {
+      res.status(401).send('Invalid username or password.');
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).send('Server error');
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
