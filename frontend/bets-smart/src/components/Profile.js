@@ -1,29 +1,85 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, CardContent, Typography, CircularProgress, Container, Button } from '@mui/material';
+import { styled } from '@mui/system';
+import EditProfile from './EditProfile';
 
-const Profile = ({ user }) => {
+const StyledCard = styled(Card)({
+  margin: '20px auto',
+  maxWidth: 600,
+});
+
+const UserProfile = () => {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get('/api/v1/users', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setUserData(response.data);
+      } catch (err) {
+        setError('Error fetching user data');
+        console.error('Error fetching user data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleEditOpen = () => {
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
+  if (!userData) {
+    return null;
+  }
+
   return (
-    <div>
-      <h1>Profile</h1>
-      <p>Email: {user.email}</p>
-      <p>Name: {user.name}</p>
-      <p>Balance: {user.balance}</p>
-      <p>Bet Statistics:</p>
-      <ul>
-        <li>Total Bets: {user.totalBets}</li>
-        <li>Winning Bets: {user.winningBets}</li>
-        <li>Losing Bets: {user.losingBets}</li>
-      </ul>
-      <h2>Last 5 Placed Bets</h2>
-      {user.bets.slice(0, 5).map((bet, index) => (
-        <div key={index}>
-          <p>Bet ID: {bet.id}</p>
-          <p>Prediction: {bet.prediction}</p>
-          <p>Amount: {bet.amount}</p>
-          <p>Result: {bet.result}</p>
-        </div>
-      ))}
-    </div>
-  )
-}
+    <Container>
+      <StyledCard>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            User Profile
+          </Typography>
+          <Typography variant="body1"><strong>Name:</strong> {userData.name}</Typography>
+          <Typography variant="body1"><strong>Email:</strong> {userData.email}</Typography>
+          <Typography variant="body1"><strong>Account Balance:</strong> ${userData.accountBalance}</Typography>
+          <Button variant="contained" color="primary" onClick={handleEditOpen}>
+            Edit Profile
+          </Button>
+        </CardContent>
+      </StyledCard>
+      <EditProfile
+        open={editOpen}
+        handleClose={handleEditClose}
+        userData={userData}
+        setUserData={setUserData}
+      />
+    </Container>
+  );
+};
 
-export default Profile
+export default UserProfile;
