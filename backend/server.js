@@ -5,7 +5,6 @@ const userRoutes = require('./routes/user-routes');
 const authRoutes = require('./routes/auth-routes');
 const betRoutes = require('./routes/bet-routes');
 const transactionRoutes = require("./routes/transaction-routes");
-const liveScore = require("./routes/scores")
 const cookieParser = require('cookie-parser');
 const sanitizeUserMiddleware = require('./middleware/sanitize-user-middleware');
 const app = express();
@@ -28,7 +27,6 @@ app.use('/api/v1/users', sanitizeUserMiddleware, userRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use("/api/v1/bets", betRoutes);
 app.use("/api/v1/transactions", transactionRoutes);
-app.use("/api/v1/livescores", liveScore);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

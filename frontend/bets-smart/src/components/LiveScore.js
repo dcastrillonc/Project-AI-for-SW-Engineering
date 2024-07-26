@@ -1,53 +1,142 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Card, CardContent, Typography, Grid, Avatar, CircularProgress, Container } from '@mui/material';
+import { styled } from '@mui/system';
+import MatchOddsModal from './MatchOddsModal'; // Import the modal component
+
+const StyledCard = styled(Card)({
+  margin: '20px auto',
+  maxWidth: 600,
+  cursor: 'pointer', // Add cursor pointer for cards
+});
+
+const Logo = styled(Avatar)({
+  width: 60,
+  height: 60,
+});
+
+const TeamName = styled('div')({
+  textAlign: 'center',
+});
+
+const Score = styled('div')({
+  textAlign: 'center',
+  fontSize: '1.5em',
+  fontWeight: 'bold',
+});
+
+const DateText = styled('div')({
+  textAlign: 'center',
+  fontSize: '1.2em',
+});
+
+const Status = styled('div')({
+  textAlign: 'center',
+  fontSize: '1em',
+  marginTop: '10px',
+});
 
 function LiveScores() {
-    const [scores, setScores] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const [liveMatches, setLiveMatches] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchScores = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await fetch('/livescores');
-                if (!res.ok) {
-                    throw new Error('Failed to fetch scores. Status: ' + res.status);
-                }
-                const data = await res.json();
-                setScores(data.response);
-            } catch (error) {
-                setError('Failed to load live scores: ' + error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchLiveMatches = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Replace with your actual API endpoint
+        const response = await axios.get(`https://v3.football.api-sports.io/fixtures?live=all`, {
+          headers: {
+            'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
+            'x-rapidapi-host': 'api.example.com',
+          },
+        });
+        setLiveMatches(response.data.response); // Extract the response array from the response object
+      } catch (err) {
+        setError('Error fetching live matches');
+        console.error('Error fetching live matches:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchScores();
-        const interval = setInterval(fetchScores, 30000); // Update scores every 30 seconds
+    fetchLiveMatches();
+  }, []);
 
-        return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, []);
+  const handleCardClick = (match) => {
+    setSelectedMatch(match);
+    setModalOpen(true);
+  };
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
-    return (
-        <div>
-            <h2>Live Scores</h2>
-            {scores.length > 0 ? (
-                <ul>
-                    {scores.map((score) => (
-                        <li key={score.id}>
-                            {score.event}: {score.homeTeam} {score.homeScore} - {score.awayScore} {score.awayTeam}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No live scores available right now.</p>
-            )}
-        </div>
-    );
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography color="error">{error}</Typography>;
+  }
+
+  return (
+    <Container>
+      {liveMatches.length === 0 ? (
+        <Typography>No live matches at the moment.</Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {liveMatches.map(match => {
+            const { fixture, teams, goals } = match;
+            const date = new Date(fixture.date).toLocaleString();
+
+            return (
+              <StyledCard key={fixture.id} onClick={() => handleCardClick(match)}>
+                <CardContent>
+                  <DateText>
+                    {date}
+                  </DateText>
+                  <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={5}>
+                      <TeamName>
+                        <Logo src={teams.home.logo} alt={teams.home.name} />
+                        <Typography variant="h6">{teams.home.name}</Typography>
+                      </TeamName>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Score>
+                        {goals.home !== null ? `${goals.home} - ${goals.away}` : '-'}
+                      </Score>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <TeamName>
+                        <Logo src={teams.away.logo} alt={teams.away.name} />
+                        <Typography variant="h6">{teams.away.name}</Typography>
+                      </TeamName>
+                    </Grid>
+                  </Grid>
+                  <Status>
+                    {fixture.status.long}
+                  </Status>
+                </CardContent>
+              </StyledCard>
+            );
+          })}
+        </Grid>
+      )}
+      {selectedMatch && (
+        <MatchOddsModal
+          open={modalOpen}
+          handleClose={handleCloseModal}
+          match={selectedMatch}
+        />
+      )}
+    </Container>
+  );
 }
 
 export default LiveScores;
