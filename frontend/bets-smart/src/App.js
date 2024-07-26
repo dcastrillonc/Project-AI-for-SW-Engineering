@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+
 import './App.css';
 import EventsComponent from './components/EventsComponent';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import HomeComponent from './components/HomeComponent';
 import Profile from './components/Profile';
+import LiveScore from './components/LiveScore';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
@@ -13,6 +14,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import BetsPage from './pages/BetsPage';
 import TransactionsPage from './pages/TransactionsPage';
 import BetDetailPage from './pages/BetDetailPage';
+import InsightsComponent from './components/Insights';
 
 function App() {
   // useEffect(() => {
@@ -38,6 +40,9 @@ function App() {
           <Route path='/transactions' element={<TransactionsPage />} />
           {/* <Route path="/bets" element={<Bets />} />
           <Route path="/insights" element={<Insights />} /> */}
+          {/* <Route path="/bets" element={<Bets />} />*/}
+          <Route path="/insights" element={<InsightsComponent />} /> 
+          <Route path="/livescores" element={<LiveScore />} />
         </Routes>
         <Footer />
       </Router>
