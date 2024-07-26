@@ -101,7 +101,7 @@ def get_chat_results(historical_bets_data):
             "recipient": customer_proxy_agent,
             "message": generate_insights_message(historical_bets_data),
             "additional_data": historical_bets_data,
-            "max_turns": 5,
+            "max_turns": 2,
             "clear_history": False
         },
     ]
