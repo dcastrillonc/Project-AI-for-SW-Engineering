@@ -1,0 +1,3003 @@
+{
+	"info": {
+		"_postman_id": "68418ffd-075c-44fd-99a2-7c8e78016554",
+		"name": "BetSmart API Documentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34269874",
+		"_collection_link": "https://betsmart-api-team.postman.co/workspace/BetSmart-API-Team-Workspace~8af8f4cb-db6a-4ca9-8847-7f7048f64e6e/collection/34269874-68418ffd-075c-44fd-99a2-7c8e78016554?action=share&source=collection_link&creator=34269874"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code must be 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Created user must be valid\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"name\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"balance\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Created user balance must be 0\", function () {\r",
+									"    pm.expect(pm.response.json().balance).to.equal(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"arboledarestrepojuan@gmail.com\",\r\n    \"password\": \"password123\",\r\n    \"name\": \"Jhon Doe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Endpoint to register user."
+					},
+					"response": [
+						{
+							"name": "Register user success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"example@example.com\",\r\n    \"password\": \"examplePassword123*\",\r\n    \"name\": \"Jhon Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-KdOTPttU5ujpIbm5sdOI+uUJ0+Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 17:16:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"Jhon Doe\",\n    \"email\": \"example@example.com\",\n    \"balance\": 0,\n    \"_id\": \"669fe55c28e282ba2855efc9\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Invalid field (400)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"example@example.com\",\r\n    \"password\": \"\",\r\n    \"name\": \"Jhon Doe\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "376"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"178-kK+TSFyHBrkRRsEHQhkUYt5sXCI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:20:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": {\n        \"password\": {\n            \"name\": \"ValidatorError\",\n            \"message\": \"Path `password` is required.\",\n            \"properties\": {\n                \"message\": \"Path `password` is required.\",\n                \"type\": \"required\",\n                \"path\": \"password\",\n                \"value\": \"\"\n            },\n            \"kind\": \"required\",\n            \"path\": \"password\",\n            \"value\": \"\"\n        }\n    },\n    \"_message\": \"User validation failed\",\n    \"name\": \"ValidationError\",\n    \"message\": \"User validation failed: password: Path `password` is required.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code must be 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"User must be valid\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"name\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"balance\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "End point to get **loged in user** information. There is no need to provide the userId as this information is already contained in the auth JWT. See Auth collection for more information."
+					},
+					"response": [
+						{
+							"name": "Unauthorized (401, no token)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:32:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "User not found (404)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Get user success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-5kATyqqLOk38iSm1aXV+mVtjXsE\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 17:17:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"669fe55c28e282ba2855efc9\",\n    \"name\": \"Jhon Doe\",\n    \"email\": \"example@example.com\",\n    \"balance\": 0,\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code must be 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Created user must be valid\", function () {\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"name\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"email\");\r",
+									"    pm.expect(pm.response.json()).to.have.property(\"balance\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Fields should be updated\", function () {\r",
+									"    pm.expect(pm.response.json().email).to.equal(\"new_email@example.com\");\r",
+									"    pm.expect(pm.response.json().name).to.equal(\"New Name\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"new_email@example.com\",\r\n    \"password\": \"new_password123*\",\r\n    \"name\": \"New Name\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Endpoint to update **loged in user's** information. There is no need to provide the userId as this information is already contained in the auth JWT. See Auth collection for more information."
+					},
+					"response": [
+						{
+							"name": "Unauthorized (401, no token provided)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new_email@example.com\",\r\n    \"password\": \"new_password123*\",\r\n    \"name\": \"New Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:35:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "User not found (404)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new_email@example.com\",\r\n    \"password\": \"new_password123*\",\r\n    \"name\": \"New Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:47:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Invalid field (400)",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new_email@example.com\",\r\n    \"password\": \"\",\r\n    \"name\": \"New Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "388"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"184-lNDH0mbX4qDksmUrEZWf9/sxii4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:49:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": {\n        \"password\": {\n            \"name\": \"ValidatorError\",\n            \"message\": \"Path `password` is required.\",\n            \"properties\": {\n                \"message\": \"Path `password` is required.\",\n                \"type\": \"required\",\n                \"path\": \"password\",\n                \"fullPath\": \"password\",\n                \"value\": \"\"\n            },\n            \"kind\": \"required\",\n            \"path\": \"password\",\n            \"value\": \"\"\n        }\n    },\n    \"_message\": \"Validation failed\",\n    \"name\": \"ValidationError\",\n    \"message\": \"Validation failed: password: Path `password` is required.\"\n}"
+						},
+						{
+							"name": "Update user success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"new_email@example.com\",\r\n    \"password\": \"new_password123*\",\r\n    \"name\": \"New Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "104"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"68-aYRDRk34tHebMuxcYeFrV/91WGI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 17:15:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"669fe51828e282ba2855efc0\",\n    \"name\": \"New Name\",\n    \"email\": \"new_email@example.com\",\n    \"balance\": 0,\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response code must be 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Endpoint to delete **loged in user**. There is no need to provide the userId as this information is already contained in the auth JWT. See Auth collection for more information."
+					},
+					"response": [
+						{
+							"name": "User not found (404)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:46:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Unauthorized (401, no token provided)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:48:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "Delete user success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-5kATyqqLOk38iSm1aXV+mVtjXsE\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 17:18:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"669fe55c28e282ba2855efc9\",\n    \"name\": \"Jhon Doe\",\n    \"email\": \"example@example.com\",\n    \"balance\": 0,\n    \"__v\": 0\n}"
+						}
+					]
+				}
+			],
+			"description": "Collection to Creat, Read, Update and Delete users."
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"arboledarestrepojuan@gmail.com\",\r\n    \"password\": \"new_password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Endpoint to login. If login is successfull, API responds with **auth_token** HTTP Only cokie. The JWT token is contained in that cokie."
+					},
+					"response": [
+						{
+							"name": "Login success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"example@example.com\",\r\n    \"password\": \"examplePassword123*\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/auth/login",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjlmZGY0NmIwNzk4OGY5OTU1NjUzZmYiLCJpYXQiOjE3MjE3NTM0MTgsImV4cCI6MTcyMTc1NzAxOH0.xOL83OeKrZMuTqrvfhgi-o0ID752hyymSN5TEOGX1bk; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "30"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e-DOWvfMhj05v4eN+mg6AlHJrIPp8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:50:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Login successful\"\n}"
+						},
+						{
+							"name": "Invalid email or password (401)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"example@example.com\",\r\n    \"password\": \"exmplePassword123*\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-Mm37A2ls1bgL0/D8e3MSpDLbow8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:50:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid email or password\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout endpoint. This endpoint removes the **auth_token** cokie"
+					},
+					"response": [
+						{
+							"name": "Logout success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/auth/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "auth_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-71uUsMgZY3FdZp9j1h5YMrBIOgg\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 16:50:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Logged out successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"arboledarestrepojuan@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/forgot-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "Forgot password endpoint. This endpoint sends a password recovery email."
+					},
+					"response": [
+						{
+							"name": "Forgot password email sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"arboledarestrepojuan@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/auth/forgot-password",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-Ppo1x4LZ+4qt/YAPsrSDirUHjYI\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 21:05:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"If a user exists with the provided email, the reset password email was sent\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwclVzZXJJZCI6IjY2YTAxYjY5YWQ1YTk0MzQ1ZmFkZjNjNiIsImlhdCI6MTcyMTc2OTQyOSwiZXhwIjoxNzIxNzczMDI5fQ.FMK7VN8I1AN2i_ZeeRbIc8T_l6Q48LmoOANTcP8qmiY\",\r\n    \"password\": \"new_password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/auth/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"reset-password"
+							]
+						},
+						"description": "Reset password endpoint. This endpoint allows to retet a user's password given the recover token sent through email."
+					},
+					"response": [
+						{
+							"name": "Password reset successfull",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwclVzZXJJZCI6IjY2YTAxYjY5YWQ1YTk0MzQ1ZmFkZjNjNiIsImlhdCI6MTcyMTc2OTQyOSwiZXhwIjoxNzIxNzczMDI5fQ.FMK7VN8I1AN2i_ZeeRbIc8T_l6Q48LmoOANTcP8qmiY\",\r\n    \"password\": \"new_password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/auth/reset-password",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-0e4m86kU0wNIY9/uj1wa+mew8GQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 21:20:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Password has been reset\"\n}"
+						},
+						{
+							"name": "Invalid or expired token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwclVzZXJJZCI6IjY2YTAxYjY5YWQ1YTk0MzQ1ZmFkZjNjNiIsImlhdCI6MTcyMTc2OTQyOSwiZXhwIjoxNzIxNzczMDI5fQ.FMK7VN8I1AN2i_ZeeRbIc8T_l6Q48LmoOANTcP8qmiY\",\r\n    \"password\": \"new_password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/auth/reset-password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-Xgv+GaqVb5MdihttTXhzczcstUY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 21:20:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid or expired token\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Auth collection"
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Add or withdraw money",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": -100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions/balance",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"balance"
+							]
+						},
+						"description": "This endpoint allows to add or withdraw money from loged in user's account. If amount is positive, money is added to the account, if amount is negative, money will be withdrew from the account."
+					},
+					"response": [
+						{
+							"name": "Add money",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "142"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8e-NAwzMeL3QiImFQ6YBfZu46hvhZ0\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 22:59:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": \"66a035be3a43ad2153019f55\",\n    \"amount\": 100,\n    \"balance\": 100,\n    \"_id\": \"66a035df3a43ad2153019f59\",\n    \"UTCDate\": \"2024-07-23T22:59:43.360Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Withdraw money",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": -100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "141"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8d-0ipkxdcIMCN4IBxcXHymD2egpno\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:00:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": \"66a035be3a43ad2153019f55\",\n    \"amount\": -100,\n    \"balance\": 0,\n    \"_id\": \"66a035ff3a43ad2153019f5d\",\n    \"UTCDate\": \"2024-07-23T23:00:15.412Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Insufisient funds",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": -100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a-HCogrMltpmKDryN/Xn+IpcUK4Gg\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:00:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Not enough funds to withdraw\"\n}"
+						},
+						{
+							"name": "User not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": -100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ZEVVcvtFhxKX/QUvVKqKxwGbbNA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:01:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User not found\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": -100\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:02:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get user transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						},
+						"description": "Get a list of user's transactions"
+					},
+					"response": [
+						{
+							"name": "Get user transactions success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/transactions",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "286"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"11e-2tbjqbHG1q9YuRs7yWQQHx/CVzY\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:01:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"66a035df3a43ad2153019f59\",\n        \"userId\": \"66a035be3a43ad2153019f55\",\n        \"amount\": 100,\n        \"balance\": 100,\n        \"UTCDate\": \"2024-07-23T22:59:43.360Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"66a035ff3a43ad2153019f5d\",\n        \"userId\": \"66a035be3a43ad2153019f55\",\n        \"amount\": -100,\n        \"balance\": 0,\n        \"UTCDate\": \"2024-07-23T23:00:15.412Z\",\n        \"__v\": 0\n    }\n]"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:02:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "User not found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/transactions",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"transactions"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ZEVVcvtFhxKX/QUvVKqKxwGbbNA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Jul 2024 23:03:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Cash a bet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "Cash a won bet"
+					},
+					"response": []
+				}
+			],
+			"description": "Transactions collection"
+		},
+		{
+			"name": "WinLoseBet",
+			"item": [
+				{
+					"name": "Create WinLoseBet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fixtureId\": 1174390,\r\n    \"amount\": 10,\r\n    \"winTeam\": \"home\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/winlose",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"winlose"
+							]
+						},
+						"description": "Create a WinLoseBet"
+					},
+					"response": [
+						{
+							"name": "Create WinLoseBet success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/winlose",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "171"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ab-OTKjWQsHs/Tft57uEkgXR2s2oXI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:07:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": \"66a126b7ee2ebd82f5fd5d91\",\n    \"fixtureId\": 1,\n    \"amount\": 1,\n    \"winTeam\": \"home\",\n    \"payed\": false,\n    \"_id\": \"66a126dfee2ebd82f5fd5da1\",\n    \"UTCDate\": \"2024-07-24T16:07:59.761Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Insufficient funds",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1000,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "32"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"20-gszukOUwM7qBWVjvz4Jk+Na2P+c\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:11:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Insufficient funds\"\n}"
+						},
+						{
+							"name": "Bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": -1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "44"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2c-ZddeSZGosrjrP6xY4qSsVm4tsYE\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:11:24 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Minimmum betting ammount is $1\"\n}"
+						},
+						{
+							"name": "User not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": -1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ZEVVcvtFhxKX/QUvVKqKxwGbbNA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:12:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User not found\"\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": -1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:12:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "Inexistent fixture",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e-CpLcw1Z+U8Ze100evyTY1HicH5E\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Jul 2024 02:23:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unable to fetch fixture with id1\"\n}"
+						},
+						{
+							"name": "Match already started",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1234193,\r\n    \"amount\": 1,\r\n    \"winTeam\": \"home\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "35"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"23-+kigbwmLoWXW9+BMKmaXkjpeTS0\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Jul 2024 02:39:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Match already started\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all user WinLoseBets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/winlose",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"winlose"
+							]
+						},
+						"description": "Get a list of loged in user's WinLoseBets"
+					},
+					"response": [
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/winlose",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-pZK48A3ZbwxVl8UtZcC9y8sBFbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:13:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"No token provided\"\n}"
+						},
+						{
+							"name": "Get success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/winlose",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "173"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ad-VCNvB/scgMla1a5ZmXZw6Wou4B8\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:14:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"66a12851afd68a2466a743e0\",\n        \"userId\": \"66a12832afd68a2466a743d5\",\n        \"fixtureId\": 1,\n        \"amount\": 1,\n        \"winTeam\": \"home\",\n        \"payed\": false,\n        \"UTCDate\": \"2024-07-24T16:14:09.370Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get user WinLoseBet by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/winlose/66a2dcd65e23dcc1c8d923b7",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"winlose",
+								"66a2dcd65e23dcc1c8d923b7"
+							]
+						},
+						"description": "Get a user's WinLoseBet by ID"
+					},
+					"response": [
+						{
+							"name": "Get success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/winlose/66a12851afd68a2466a743e0",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"winlose",
+										"66a12851afd68a2466a743e0"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "171"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ab-+eTvupvyURh5szE6pyXBmw7qSSk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:15:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"66a12851afd68a2466a743e0\",\n    \"userId\": \"66a12832afd68a2466a743d5\",\n    \"fixtureId\": 1,\n    \"amount\": 1,\n    \"winTeam\": \"home\",\n    \"payed\": false,\n    \"UTCDate\": \"2024-07-24T16:14:09.370Z\",\n    \"__v\": 0\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ResultBet",
+			"item": [
+				{
+					"name": "Create ResultBet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fixtureId\": 1174390,\r\n    \"amount\": 10,\r\n    \"homeScore\": 4,\r\n    \"awayScore\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/result",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"result"
+							]
+						},
+						"description": "Create a ResultBet"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": 1,\r\n    \"awayScore\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/result",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"result"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "182"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b6-T5zt/tidWQIK9pHchRjYltsj49Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:29:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": \"66a12832afd68a2466a743d5\",\n    \"fixtureId\": 1,\n    \"amount\": 1,\n    \"homeScore\": 1,\n    \"awayScore\": 1,\n    \"payed\": false,\n    \"_id\": \"66a12be6e518bee35fbe46f1\",\n    \"UTCDate\": \"2024-07-24T16:29:26.322Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Create ResultBet",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1158769,\r\n    \"amount\": 1,\r\n    \"homeScore\": 1,\r\n    \"awayScore\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/result",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"result"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "250"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fa-+iVBuejaszpH4hfDjucNz0M+tkY\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Jul 2024 02:48:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"userId\": \"66a182723017680576d936de\",\n    \"fixtureId\": 1158769,\n    \"amount\": 1,\n    \"homeScore\": 1,\n    \"awayScore\": 1,\n    \"payed\": false,\n    \"_id\": \"66a1bd010a00eda8bbea8c9a\",\n    \"UTCDate\": \"2024-07-25T02:48:33.140Z\",\n    \"homeTeamName\": \"Belgrano Cordoba\",\n    \"awayTeamName\": \"Godoy Cruz\",\n    \"__v\": 0\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all user ResultBets",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": -1,\r\n    \"awayScore\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/result",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"result"
+							]
+						},
+						"description": "Get all of loged in user's ResultBets"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": -1,\r\n    \"awayScore\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/result",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"result"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "367"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"16f-Ojx+PaGVeo9hgYixkht9VJQliUw\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:32:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"_id\": \"66a12be6e518bee35fbe46f1\",\n        \"userId\": \"66a12832afd68a2466a743d5\",\n        \"fixtureId\": 1,\n        \"amount\": 1,\n        \"homeScore\": 1,\n        \"awayScore\": 1,\n        \"payed\": false,\n        \"UTCDate\": \"2024-07-24T16:29:26.322Z\",\n        \"__v\": 0\n    },\n    {\n        \"_id\": \"66a12c7be518bee35fbe46fa\",\n        \"userId\": \"66a12832afd68a2466a743d5\",\n        \"fixtureId\": 1,\n        \"amount\": 1,\n        \"homeScore\": 1,\n        \"awayScore\": 1,\n        \"payed\": false,\n        \"UTCDate\": \"2024-07-24T16:31:55.901Z\",\n        \"__v\": 0\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get user's ResultBet by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": -1,\r\n    \"awayScore\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/bets/result/66a1bd010a00eda8bbea8c9a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bets",
+								"result",
+								"66a1bd010a00eda8bbea8c9a"
+							]
+						},
+						"description": "Get a loged in user's ResultBet by ID"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": -1,\r\n    \"awayScore\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/v1/bets/result/66a12be6e518bee35fbe46f1",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"result",
+										"66a12be6e518bee35fbe46f1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "182"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b6-VH26fl2+SBLVqP7MvdbbgEpK8iY\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 24 Jul 2024 16:32:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"66a12be6e518bee35fbe46f1\",\n    \"userId\": \"66a12832afd68a2466a743d5\",\n    \"fixtureId\": 1,\n    \"amount\": 1,\n    \"homeScore\": 1,\n    \"awayScore\": 1,\n    \"payed\": false,\n    \"UTCDate\": \"2024-07-24T16:29:26.322Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "Get user's ResultBet by ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fixtureId\": 1,\r\n    \"amount\": 1,\r\n    \"homeScore\": -1,\r\n    \"awayScore\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/bets/result/66a1bd010a00eda8bbea8c9a",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"bets",
+										"result",
+										"66a1bd010a00eda8bbea8c9a"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1334"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"536-X0qYKUr+cvYr5TzogWFGWR/fNpU\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 25 Jul 2024 03:05:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"bet\": {\n        \"_id\": \"66a1bd010a00eda8bbea8c9a\",\n        \"userId\": \"66a182723017680576d936de\",\n        \"fixtureId\": 1158769,\n        \"amount\": 1,\n        \"homeScore\": 1,\n        \"awayScore\": 1,\n        \"payed\": false,\n        \"UTCDate\": \"2024-07-25T02:48:33.140Z\",\n        \"homeTeamName\": \"Belgrano Cordoba\",\n        \"awayTeamName\": \"Godoy Cruz\",\n        \"__v\": 0\n    },\n    \"fixtureInfo\": {\n        \"fixture\": {\n            \"id\": 1158769,\n            \"referee\": null,\n            \"timezone\": \"UTC\",\n            \"date\": \"2024-07-30T00:00:00+00:00\",\n            \"timestamp\": 1722297600,\n            \"periods\": {\n                \"first\": null,\n                \"second\": null\n            },\n            \"venue\": {\n                \"id\": 45,\n                \"name\": \"Estadio Julio César Villagra\",\n                \"city\": \"Ciudad de Córdoba, Provincia de Córdoba\"\n            },\n            \"status\": {\n                \"long\": \"Not Started\",\n                \"short\": \"NS\",\n                \"elapsed\": null\n            }\n        },\n        \"league\": {\n            \"id\": 128,\n            \"name\": \"Liga Profesional Argentina\",\n            \"country\": \"Argentina\",\n            \"logo\": \"https://media.api-sports.io/football/leagues/128.png\",\n            \"flag\": \"https://media.api-sports.io/flags/ar.svg\",\n            \"season\": 2024,\n            \"round\": \"2nd Phase - 8\"\n        },\n        \"teams\": {\n            \"home\": {\n                \"id\": 440,\n                \"name\": \"Belgrano Cordoba\",\n                \"logo\": \"https://media.api-sports.io/football/teams/440.png\",\n                \"winner\": null\n            },\n            \"away\": {\n                \"id\": 439,\n                \"name\": \"Godoy Cruz\",\n                \"logo\": \"https://media.api-sports.io/football/teams/439.png\",\n                \"winner\": null\n            }\n        },\n        \"goals\": {\n            \"home\": null,\n            \"away\": null\n        },\n        \"score\": {\n            \"halftime\": {\n                \"home\": null,\n                \"away\": null\n            },\n            \"fulltime\": {\n                \"home\": null,\n                \"away\": null\n            },\n            \"extratime\": {\n                \"home\": null,\n                \"away\": null\n            },\n            \"penalty\": {\n                \"home\": null,\n                \"away\": null\n            }\n        },\n        \"events\": [],\n        \"lineups\": [],\n        \"statistics\": [],\n        \"players\": []\n    },\n    \"status\": \"undetermined\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
